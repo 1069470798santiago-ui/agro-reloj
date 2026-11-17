@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgroWeb | Monitoreo agrícola</title>
+<style>
+:root{--green:#176b3a;--light:#eaf5ed;--dark:#173322;--muted:#65756a}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f7f4;color:var(--dark)}
+header{background:var(--green);color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{margin:0;font-size:24px}header small{opacity:.9}
+main{max-width:1100px;margin:24px auto;padding:0 16px}
+.card{background:white;border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 3px 14px #183b2410}
+h2{margin-top:0;color:var(--green)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.metric{background:var(--light);padding:16px;border-radius:12px}.metric strong{display:block;font-size:27px;color:var(--green);margin-top:8px}
+button{background:var(--green);color:white;border:0;border-radius:8px;padding:11px 15px;cursor:pointer;font-weight:bold}
+button.secondary{background:#e2eee5;color:var(--green)}input,select{padding:11px;border:1px solid #ccd8ce;border-radius:8px;width:100%;margin:6px 0 12px}
+label{font-weight:bold;font-size:14px}.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+#app{display:none}.tag{display:inline-block;background:#e2f2e5;color:#176b3a;padding:5px 9px;border-radius:20px;font-size:12px}
+table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:10px;border-bottom:1px solid #e5ece6}
+#login{max-width:420px;margin:50px auto}.notice{font-size:13px;color:var(--muted);line-height:1.5}
+.alert{padding:12px;background:#fff0d9;border-left:4px solid #e49b27;border-radius:8px;margin-top:12px}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header><div><h1>🌱 AgroWeb</h1><small>Plataforma de monitoreo agrícola · Sahagún, Córdoba</small></div><span class="tag">Prototipo académico</span></header>
+<main>
+<section id="login" class="card">
+<h2>Iniciar sesión</h2>
+<p>Ingresa con las credenciales de demostración.</p>
+<label>Correo electrónico</label><input id="email" type="email" value="demo@agroweb.local">
+<label>Contraseña</label><input id="password" type="password" value="Agro2026">
+<button onclick="login()">Ingresar</button>
+<p class="notice">Demo: demo@agroweb.local / Agro2026</p>
+</section>
+<div id="app">
+<section class="card">
+<h2>Panel principal</h2><p>Resumen del estado de los cultivos y variables agrícolas.</p>
+<div class="grid">
+<div class="metric">Humedad del suelo<strong id="hum">62 %</strong></div>
+<div class="metric">Temperatura<strong id="temp">28 °C</strong></div>
+<div class="metric">pH del suelo<strong id="ph">6.5</strong></div>
+<div class="metric">Flujo de agua<strong id="flow">12 L/min</strong></div>
+</div>
+</section>
+<section class="card"><h2>🌾 Cultivos registrados</h2>
+<table><thead><tr><th>Cultivo</th><th>Estado</th><th>Zona</th></tr></thead><tbody id="crops">
+<tr><td>Yuca</td><td><span class="tag">En seguimiento</span></td><td>Sahagún</td></tr>
+<tr><td>Plátano</td><td><span class="tag">En seguimiento</span></td><td>Sahagún</td></tr>
+<tr><td>Ñame</td><td><span class="tag">En seguimiento</span></td><td>Sahagún</td></tr>
+</tbody></table>
+<h3>Registrar cultivo</h3><div class="formgrid"><div><label>Nombre</label><input id="cropName" placeholder="Ej. Maíz"></div><div><label>Zona o parcela</label><input id="cropZone" placeholder="Ej. Lote 2"></div></div>
+<button onclick="addCrop()">Agregar cultivo</button>
+</section>
+<section class="card"><h2>💧 Monitoreo de agua y fugas</h2>
+<div class="grid"><div class="metric">Presión<strong id="pressure">2.4 bar</strong></div><div class="metric">Flujo<strong id="flow2">12 L/min</strong></div></div>
+<p id="waterStatus">Estado: funcionamiento normal.</p><button onclick="simulate()">Simular anomalía</button> <button class="secondary" onclick="resetWater()">Restablecer valores</button>
+<div id="alert"></div></section>
+<section class="card"><h2>📍 Ubicación del proyecto</h2><p>Referencia municipal aproximada: Sahagún, Córdoba, Colombia.</p>
+<p id="coords">Coordenadas de referencia: 8.9500, -75.4450</p><button onclick="gps()">Solicitar ubicación GPS</button><p class="notice">La ubicación GPS requiere autorización del navegador y conexión segura.</p></section>
+<section class="card"><h2>📊 Pruebas y KPI propuestos</h2>
+<table><thead><tr><th>Indicador</th><th>Meta propuesta</th><th>Cómo comprobarlo</th></tr></thead><tbody>
+<tr><td>Acceso al panel</td><td>Ingreso correcto en menos de 5 s</td><td>Realizar 5 intentos de prueba</td></tr>
+<tr><td>Registro de cultivos</td><td>Guardar correctamente cada registro durante la sesión</td><td>Agregar y verificar un cultivo</td></tr>
+<tr><td>Visualización de variables</td><td>Mostrar humedad, temperatura y pH</td><td>Comparar los valores mostrados</td></tr>
+<tr><td>Alerta de fuga simulada</td><td>Mostrar alerta al detectar anomalía</td><td>Usar el botón de simulación</td></tr>
+</tbody></table>
+<div class="alert"><strong>Nota académica:</strong> las mediciones son simuladas para demostrar la interfaz. No provienen de sensores físicos ni constituyen resultados experimentales reales. Las metas KPI deben validarse mediante pruebas documentadas.</div>
+</section>
+<button class="secondary" onclick="logout()">Cerrar sesión</button>
+</div>
+</main>
+<footer>AgroWeb · Prototipo demostrativo para actividad académica · UNAD</footer>
+<script>
+function login(){if(document.getElementById('email').value==='demo@agroweb.local'&&document.getElementById('password').value==='Agro2026'){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block'}else alert('Credenciales incorrectas. Usa demo@agroweb.local y Agro2026')}
+function logout(){document.getElementById('app').style.display='none';document.getElementById('login').style.display='block'}
+function addCrop(){let n=document.getElementById('cropName').value.trim(),z=document.getElementById('cropZone').value.trim();if(!n){alert('Escribe el nombre del cultivo');return}let tr=document.createElement('tr');[n,'En seguimiento',z||'Sin especificar'].forEach(v=>{let td=document.createElement('td');td.textContent=v;tr.appendChild(td)});document.getElementById('crops').appendChild(tr);document.getElementById('cropName').value='';document.getElementById('cropZone').value=''}
+function simulate(){document.getElementById('pressure').textContent='0.6 bar';document.getElementById('flow2').textContent='3 L/min';document.getElementById('flow').textContent='3 L/min';document.getElementById('waterStatus').textContent='Estado: posible anomalía detectada (simulada).';document.getElementById('alert').innerHTML='<div class="alert">⚠️ Alerta demostrativa: revise la presión y el flujo de agua.</div>'}
+function resetWater(){document.getElementById('pressure').textContent='2.4 bar';document.getElementById('flow2').textContent='12 L/min';document.getElementById('flow').textContent='12 L/min';document.getElementById('waterStatus').textContent='Estado: funcionamiento normal.';document.getElementById('alert').innerHTML=''}
+function gps(){if(!navigator.geolocation){alert('Este navegador no permite GPS');return}navigator.geolocation.getCurrentPosition(p=>{document.getElementById('coords').textContent='Tu ubicación: '+p.coords.latitude.toFixed(5)+', '+p.coords.longitude.toFixed(5)},()=>alert('No se pudo obtener la ubicación. Revisa los permisos del navegador.'))}
+</script>
+</body></html>
